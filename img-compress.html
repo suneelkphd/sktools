@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sktools - Advanced Image Optimization Suite</title>
+    <meta name="description" content="Professional-grade image compression and editing tools with pixel-level precision. Optimize JPEG, PNG, WebP formats with AI-powered compression algorithms.">
+    <meta name="keywords" content="sktools, image optimization, photo editor, web tools, SEO compressor">
+    
+    <!-- Google AdSense Code -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-PUBLISHER_ID"
+    crossorigin="anonymous"></script>
+
+    <style>
+        :root {
+            --primary-bg: #0f0f1f;
+            --secondary-bg: #1a1a2f;
+            --accent: #00ff88;
+            --text-primary: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(45deg, #0a0a1a, #15152a);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        header {
+            background: rgba(15, 15, 35, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 0.5rem 0;
+            transition: all 0.3s ease;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+
+        .main-content {
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #00ff88, #00ccff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .tool-section {
+            margin-bottom: 2rem;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .custom-upload {
+            display: inline-block;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            background: var(--secondary-bg);
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .custom-upload:hover {
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .compression-controls {
+            background: var(--secondary-bg);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            position: relative;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            background: #2a2a4a;
+            border-radius: 4px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+        }
+
+        #imageCanvas {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            margin: 2rem auto;
+            cursor: crosshair;
+            background: var(--secondary-bg);
+        }
+
+        .rgb-button {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            background: var(--secondary-bg);
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .rgb-button::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                #00ff88, 
+                #00ccff, 
+                #ff00ff, 
+                #00ff88);
+            background-size: 400%;
+            z-index: -1;
+            animation: rgb-border 6s linear infinite;
+            opacity: 0;
+            transition: opacity 0.3s;
+            border-radius: 8px;
+        }
+
+        .rgb-button:hover::before {
+            opacity: 1;
+        }
+
+        .rgb-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 255, 136, 0.2);
+        }
+
+        @keyframes rgb-border {
+            0% { background-position: 0 0; }
+            100% { background-position: 400% 0; }
+        }
+
+        .ad-section {
+            background: rgba(15, 15, 35, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 0 1rem;
+            }
+            
+            .header-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+            
+            .ad-section {
+                order: -1;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo">sktools</div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Tools</a></li>
+                    <li><a href="#">Features</a></li>
+                    <li><a href="#">Pricing</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <main class="main-content">
+            <h1>Image Optimization Toolkit</h1>
+            
+            <div class="tool-section">
+                <label class="custom-upload rgb-button">
+                    📁 Upload Image
+                    <input type="file" id="imageInput" accept="image/*">
+                </label>
+                
+                <div class="compression-controls">
+                    <label style="display: block; margin-bottom: 1rem;">Compression Level: 
+                        <span id="compressionValue">80%</span>
+                    </label>
+                    <input type="range" id="compressionLevel" min="0" max="1" step="0.1" value="0.8">
+                </div>
+
+                <canvas id="imageCanvas"></canvas>
+                
+                <div class="pixel-editor" style="text-align: center; margin-top: 2rem;">
+                    <input type="color" id="colorPicker" style="height: 40px; width: 60px; border: none;">
+                    <button class="rgb-button" onclick="downloadImage()" style="margin-left: 1rem;">
+                        💾 Download Image
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <div class="ad-section">
+            <!-- AdSense Ad Unit -->
+            <ins class="adsbygoogle"
+                style="display:block"
+                data-ad-client="ca-pub-PUBLISHER_ID"
+                data-ad-slot="1234567890"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('imageCanvas');
+        const ctx = canvas.getContext('2d');
+        let currentImage = null;
+
+        document.getElementById('imageInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+
+            reader.onload = function(event) {
+                const img = new Image();
+                img.onload = function() {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    currentImage = img;
+                    document.querySelector('.pixel-editor').style.display = 'block';
+                }
+                img.src = event.target.result;
+            }
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById('compressionLevel').addEventListener('input', function(e) {
+            document.getElementById('compressionValue').textContent = 
+                `${Math.round(e.target.value * 100)}%`;
+        });
+
+        canvas.addEventListener('click', function(e) {
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const color = document.getElementById('colorPicker').value;
+
+            const pixel = ctx.getImageData(x, y, 1, 1);
+            const rgba = hexToRgb(color);
+            
+            pixel.data[0] = rgba.r;
+            pixel.data[1] = rgba.g;
+            pixel.data[2] = rgba.b;
+            pixel.data[3] = 255;
+            
+            ctx.putImageData(pixel, x, y);
+        });
+
+        function hexToRgb(hex) {
+            const bigint = parseInt(hex.slice(1), 16);
+            return {
+                r: (bigint >> 16) & 255,
+                g: (bigint >> 8) & 255,
+                b: bigint & 255
+            };
+        }
+
+        function downloadImage() {
+            const quality = document.getElementById('compressionLevel').value;
+            canvas.toBlob(blob => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `sktools-optimized-${Date.now()}.jpg`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }, 'image/jpeg', quality);
+        }
+    </script>
+</body>
+</html>
